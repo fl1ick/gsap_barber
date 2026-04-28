@@ -63,7 +63,7 @@ const premiumLists = [
 ];
 
 // BARBERS
-// BARBERS
+
 const barberLists = [
   {
     name: "Rizal Pratama",
@@ -72,6 +72,7 @@ const barberLists = [
     store: "Prime Cuts — Sudirman",
     wa: "https://wa.me/6281234567890?text=Halo%20Kak%20Rizal%2C%20saya%20ingin%20booking%20",
     imgPath: "/images/barber1.png",
+    isOnline: true,
   },
   {
     name: "Dimas Arya",
@@ -80,6 +81,7 @@ const barberLists = [
     store: "Prime Cuts — Pemuda",
     wa: "https://wa.me/6281399887766?text=Halo%20Kak%20Dimas%2C%20saya%20ingin%20booking%20",
     imgPath: "/images/barber2.png",
+    isOnline: true,
   },
   {
     name: "Farhan Malik",
@@ -88,6 +90,7 @@ const barberLists = [
     store: "Prime Cuts — Merdeka",
     wa: "https://wa.me/6285712345678?text=Halo%20Kak%20Farhan%2C%20saya%20ingin%20booking%20",
     imgPath: "/images/barber3.png",
+    isOnline: true,
   },
   {
     name: "Bagas Nugroho",
@@ -96,6 +99,7 @@ const barberLists = [
     store: "Prime Cuts — Sudirman",
     wa: "https://wa.me/6282155667788?text=Halo%20Kak%20Bagas%2C%20saya%20ingin%20booking%20",
     imgPath: "/images/barber4.png",
+    isOnline: false,
   },
 ];
 

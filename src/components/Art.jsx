@@ -82,24 +82,35 @@ const Art = () => {
           "radial-gradient(circle at center, #434343 0%, #000 50%, transparent 100%)",
       }}
     >
-      {/* Custom cursor */}
+      {/* Pulse animation style */}
+      <style>{`
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50%       { opacity: 0.4; transform: scale(0.85); }
+        }
+        @keyframes ping {
+          0%   { transform: scale(1); opacity: 0.6; }
+          100% { transform: scale(2.2); opacity: 0; }
+        }
+      `}</style>
+
       {/* Custom cursor */}
       <div
         ref={cursorRef}
         style={{
           position: "fixed",
-          top: "-200px", // ← taruh di luar viewport awalnya
-          left: "-200px", // ← taruh di luar viewport awalnya
-          width: "150px", // ← perkecil dari 180px
-          height: "150px", // ← perkecil dari 180px
+          top: "-200px",
+          left: "-200px",
+          width: "150px",
+          height: "150px",
           borderRadius: "50%",
           overflow: "hidden",
           pointerEvents: "none",
           zIndex: 999,
           opacity: 0,
           border: "2px solid #e7d393",
-          marginLeft: "-75px", // ← sesuaikan dengan ukuran baru (setengah dari 150)
-          marginTop: "-75px", // ← sesuaikan dengan ukuran baru
+          marginLeft: "-75px",
+          marginTop: "-75px",
           transform: "scale(0)",
         }}
       >
@@ -150,8 +161,8 @@ const Art = () => {
           {barberLists.map((barber, index) => (
             <a
               key={index}
-              href={barber.wa}
-              target="_blank"
+              href={barber.isOnline ? barber.wa : undefined}
+              target={barber.isOnline ? "_blank" : undefined}
               rel="noopener noreferrer"
               className="barber-card"
               onMouseEnter={() => handleMouseEnter(barber.imgPath)}
@@ -162,10 +173,12 @@ const Art = () => {
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
-                border: "1px solid rgba(255,255,255,0.1)",
+                border: `1px solid ${barber.isOnline ? "rgba(74,222,128,0.2)" : "rgba(255,255,255,0.1)"}`,
                 minHeight: "450px",
                 textDecoration: "none",
                 transition: "border-color 0.3s, transform 0.3s",
+                cursor: barber.isOnline ? "pointer" : "default",
+                opacity: barber.isOnline ? 1 : 0.75,
               }}
             >
               {/* Foto */}
@@ -187,6 +200,7 @@ const Art = () => {
                     borderRadius: "0",
                     display: "block",
                     transition: "transform 0.7s ease",
+                    filter: barber.isOnline ? "none" : "grayscale(40%)",
                   }}
                 />
                 {/* Gradient overlay */}
@@ -198,6 +212,62 @@ const Art = () => {
                       "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)",
                   }}
                 />
+
+                {/* Badge status di pojok kanan atas foto */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "0.75rem",
+                    right: "0.75rem",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.4rem",
+                    borderRadius: "999px",
+                    padding: "0.3rem 0.7rem",
+                    background: barber.isOnline
+                      ? "rgba(0,0,0,0.55)"
+                      : "rgba(0,0,0,0.55)",
+                    border: `1px solid ${barber.isOnline ? "rgba(74,222,128,0.5)" : "rgba(255,255,255,0.2)"}`,
+                    backdropFilter: "blur(6px)",
+                  }}
+                >
+                  {/* Dot dengan efek ping kalau online */}
+                  <span style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                    {barber.isOnline && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          width: "8px",
+                          height: "8px",
+                          borderRadius: "50%",
+                          background: "rgb(74,222,128)",
+                          animation: "ping 1.4s ease-out infinite",
+                        }}
+                      />
+                    )}
+                    <span
+                      style={{
+                        width: "8px",
+                        height: "8px",
+                        borderRadius: "50%",
+                        background: barber.isOnline ? "rgb(74,222,128)" : "#555",
+                        display: "inline-block",
+                        animation: barber.isOnline ? "pulse-dot 1.5s ease-in-out infinite" : "none",
+                        boxShadow: barber.isOnline ? "0 0 6px rgba(74,222,128,0.7)" : "none",
+                      }}
+                    />
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "0.7rem",
+                      fontWeight: 600,
+                      color: barber.isOnline ? "rgb(74,222,128)" : "rgba(255,255,255,0.4)",
+                      letterSpacing: "0.03em",
+                    }}
+                  >
+                    {barber.isOnline ? "Bertugas" : "Tidak Bertugas"}
+                  </span>
+                </div>
               </div>
 
               {/* Info */}
@@ -277,25 +347,31 @@ const Art = () => {
                       {barber.phone}
                     </p>
                   </div>
+
+                  {/* Booking button — hanya aktif kalau online */}
                   <div
                     style={{
                       marginTop: "0.5rem",
                       borderRadius: "999px",
                       padding: "0.375rem 1rem",
                       width: "fit-content",
-                      background: "rgba(34,197,94,0.2)",
-                      border: "1px solid rgba(34,197,94,0.4)",
+                      background: barber.isOnline
+                        ? "rgba(34,197,94,0.2)"
+                        : "rgba(255,255,255,0.05)",
+                      border: `1px solid ${barber.isOnline ? "rgba(34,197,94,0.4)" : "rgba(255,255,255,0.1)"}`,
                     }}
                   >
                     <p
                       style={{
                         fontSize: "0.75rem",
                         fontWeight: 600,
-                        color: "rgb(74,222,128)",
+                        color: barber.isOnline
+                          ? "rgb(74,222,128)"
+                          : "rgba(255,255,255,0.25)",
                         margin: 0,
                       }}
                     >
-                      Booking via WA
+                      {barber.isOnline ? "Booking via WA" : "Sedang Tidak Tersedia"}
                     </p>
                   </div>
                 </div>
