@@ -1,11 +1,8 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { SplitText } from "gsap/all";
-import { serviceLists, premiumLists } from "../../constants/index.js";
 
-const Services = () => {
+const Services = ({ serviceLists = [], premiumLists = [] }) => {
   useGSAP(() => {
-    // Animasi teks masuk
     gsap
       .timeline({
         scrollTrigger: {
@@ -33,17 +30,10 @@ const Services = () => {
       )
       .from(
         ".premium-item",
-        {
-          opacity: 0,
-          x: 30,
-          stagger: 0.08,
-          duration: 0.8,
-          ease: "power2.out",
-        },
+        { opacity: 0, x: 30, stagger: 0.08, duration: 0.8, ease: "power2.out" },
         "<",
       );
 
-    // Parallax dekor
     gsap
       .timeline({
         scrollTrigger: {
@@ -56,7 +46,6 @@ const Services = () => {
       .from("#s-left-decor", { y: 80, rotation: -10 })
       .from("#s-right-decor", { y: -80, rotation: 10 }, "<");
 
-    // Parallax teks besar background
     gsap.to(".services-bg-text", {
       scrollTrigger: {
         trigger: "#services",
@@ -84,10 +73,8 @@ const Services = () => {
         className="hidden md:block"
       />
 
-      {/* Teks besar dekoratif di background */}
       <div className="services-bg-text">CUT AND COP</div>
 
-      {/* Garis diagonal dekoratif */}
       <div className="services-lines">
         <div className="line" />
         <div className="line" />
@@ -95,10 +82,8 @@ const Services = () => {
       </div>
 
       <div className="list">
-        {/* SERVICES */}
         <div className="popular">
           <h2 className="service-heading">Our Services</h2>
-
           <ul>
             {serviceLists.map(({ name, duration, detail, price }) => (
               <li key={name} className="service-item">
@@ -114,10 +99,8 @@ const Services = () => {
           </ul>
         </div>
 
-        {/* PREMIUM */}
         <div className="loved">
           <h2 className="service-heading">Premium Grooming</h2>
-
           <ul>
             {premiumLists.map(({ name, duration, detail, price }) => (
               <li key={name} className="premium-item">

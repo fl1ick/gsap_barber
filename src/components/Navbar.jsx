@@ -1,19 +1,14 @@
-import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
-import { navLinks } from "../../constants/index.js";
-
-const Navbar = () => {
+const Navbar = ({ navLinks = [] }) => {
   useGSAP(() => {
     const navTween = gsap.timeline({
-      scrollTrigger: {
-        trigger: "nav",
-        start: "bottom top",
-      },
+      scrollTrigger: { trigger: "navbar-front", start: "bottom top" },
     });
 
     navTween.fromTo(
-      "nav",
+      "navbar-front",
       { backgroundColor: "transparent" },
       {
         backgroundColor: "#00000080",
@@ -25,10 +20,14 @@ const Navbar = () => {
   });
 
   return (
-    <nav>
+    <navbar-front>
       <div>
         <a href="#home" className="flex items-center gap-2">
-          <img src="/images/logo.png" alt="logo" />
+          <img
+            src="/images/logo.png"
+            alt="logo"
+            className="w-10 h-10 object-contain"
+          />
           <p>Prime Cuts</p>
         </a>
 
@@ -40,7 +39,8 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
-    </nav>
+    </navbar-front>
   );
 };
+
 export default Navbar;

@@ -1,29 +1,23 @@
-"use client";
-
-import { allStyles } from "../../constants/index.js";
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
-const Styles = () => {
+const Styles = ({ allStyles = [] }) => {
   const contentRef = useRef();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useGSAP(() => {
     gsap.fromTo("#style-title", { opacity: 0 }, { opacity: 1, duration: 1 });
-
     gsap.fromTo(
       ".style-showcase img",
       { opacity: 0, xPercent: -100 },
       { xPercent: 0, opacity: 1, duration: 1, ease: "power1.inOut" },
     );
-
     gsap.fromTo(
       ".details h2",
       { yPercent: 100, opacity: 0 },
       { yPercent: 0, opacity: 1, ease: "power1.inOut" },
     );
-
     gsap.fromTo(
       ".details p",
       { yPercent: 100, opacity: 0 },
@@ -31,16 +25,14 @@ const Styles = () => {
     );
   }, [currentIndex]);
 
+  // Jangan render kalau data belum ada
+  if (!allStyles.length) return null;
+
   const totalStyles = allStyles.length;
-
-  const goToSlide = (index) => {
-    const newIndex = (index + totalStyles) % totalStyles;
-    setCurrentIndex(newIndex);
-  };
-
-  const getStyleAt = (offset) => {
-    return allStyles[(currentIndex + offset + totalStyles) % totalStyles];
-  };
+  const goToSlide = (index) =>
+    setCurrentIndex((index + totalStyles) % totalStyles);
+  const getStyleAt = (offset) =>
+    allStyles[(currentIndex + offset + totalStyles) % totalStyles];
 
   const currentStyle = getStyleAt(0);
   const prevStyle = getStyleAt(-1);
@@ -59,29 +51,23 @@ const Styles = () => {
         Hairstyle Showcase
       </h2>
 
-      {/* Tab navigasi per gaya rambut */}
       <nav className="cocktail-tabs" aria-label="Style Navigation">
-        {allStyles.map((style, index) => {
-          const isActive = index === currentIndex;
-
-          return (
-            <button
-              key={style.id}
-              className={
-                isActive
-                  ? "text-white border-white"
-                  : "text-white/50 border-white/50"
-              }
-              onClick={() => goToSlide(index)}
-            >
-              {style.name}
-            </button>
-          );
-        })}
+        {allStyles.map((style, index) => (
+          <button
+            key={style.id}
+            className={
+              index === currentIndex
+                ? "text-white border-white"
+                : "text-white/50 border-white/50"
+            }
+            onClick={() => goToSlide(index)}
+          >
+            {style.name}
+          </button>
+        ))}
       </nav>
 
       <div className="content">
-        {/* Tombol prev / next */}
         <div className="arrows">
           <button
             className="text-left"
@@ -94,7 +80,6 @@ const Styles = () => {
               aria-hidden="true"
             />
           </button>
-
           <button
             className="text-left"
             onClick={() => goToSlide(currentIndex + 1)}
@@ -104,7 +89,6 @@ const Styles = () => {
           </button>
         </div>
 
-        {/* Gambar gaya rambut */}
         <div className="style-showcase">
           <img
             src={currentStyle.image}
@@ -113,13 +97,11 @@ const Styles = () => {
           />
         </div>
 
-        {/* Info gaya rambut */}
         <div className="recipe">
           <div ref={contentRef} className="info">
             <p>Style pilihan:</p>
             <p id="style-title">{currentStyle.name}</p>
           </div>
-
           <div className="details">
             <h2>{currentStyle.title}</h2>
             <p>{currentStyle.description}</p>

@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all";
-import { barberLists } from "../../constants/index.js";
+import { barberLists } from "../constants/index.js";
 import { useRef } from "react";
 
 const Art = () => {
@@ -232,7 +232,14 @@ const Art = () => {
                   }}
                 >
                   {/* Dot dengan efek ping kalau online */}
-                  <span style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                  <span
+                    style={{
+                      position: "relative",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
                     {barber.isOnline && (
                       <span
                         style={{
@@ -250,10 +257,16 @@ const Art = () => {
                         width: "8px",
                         height: "8px",
                         borderRadius: "50%",
-                        background: barber.isOnline ? "rgb(74,222,128)" : "#555",
+                        background: barber.isOnline
+                          ? "rgb(74,222,128)"
+                          : "#555",
                         display: "inline-block",
-                        animation: barber.isOnline ? "pulse-dot 1.5s ease-in-out infinite" : "none",
-                        boxShadow: barber.isOnline ? "0 0 6px rgba(74,222,128,0.7)" : "none",
+                        animation: barber.isOnline
+                          ? "pulse-dot 1.5s ease-in-out infinite"
+                          : "none",
+                        boxShadow: barber.isOnline
+                          ? "0 0 6px rgba(74,222,128,0.7)"
+                          : "none",
                       }}
                     />
                   </span>
@@ -261,7 +274,9 @@ const Art = () => {
                     style={{
                       fontSize: "0.7rem",
                       fontWeight: 600,
-                      color: barber.isOnline ? "rgb(74,222,128)" : "rgba(255,255,255,0.4)",
+                      color: barber.isOnline
+                        ? "rgb(74,222,128)"
+                        : "rgba(255,255,255,0.4)",
                       letterSpacing: "0.03em",
                     }}
                   >
@@ -371,7 +386,9 @@ const Art = () => {
                         margin: 0,
                       }}
                     >
-                      {barber.isOnline ? "Booking via WA" : "Sedang Tidak Tersedia"}
+                      {barber.isOnline
+                        ? "Booking via WA"
+                        : "Sedang Tidak Tersedia"}
                     </p>
                   </div>
                 </div>

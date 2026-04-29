@@ -2,7 +2,7 @@
 const navLinks = [
   { id: "services", title: "Services" },
   { id: "about", title: "About Us" },
-  { id: "barbers", title: "Our Barbers" },
+  { id: "art", title: "Our Barbers" },
   { id: "contact", title: "Contact" },
 ];
 

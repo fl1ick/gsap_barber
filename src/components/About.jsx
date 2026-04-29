@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { SplitText } from "gsap/all";
 import { useGSAP } from "@gsap/react";
-import { featureLists, goodLists } from "../../constants/index.js";
+import { featureLists, goodLists } from "../constants/index.js";
 
 const About = () => {
   useGSAP(() => {

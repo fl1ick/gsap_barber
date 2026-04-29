@@ -1,4 +1,3 @@
-import { openingHours, socials, storeInfo } from "../../constants/index.js";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all";
 import gsap from "gsap";
@@ -34,7 +33,7 @@ const stores = [
   },
 ];
 
-const Contact = () => {
+const Contact = ({ storeInfo = {}, openingHours = [], socials = [] }) => {
   const cursorRef = useRef();
   const cursorImgRef = useRef();
   const footerRef = useRef();
@@ -43,12 +42,7 @@ const Contact = () => {
     const titleSplit = SplitText.create("#contact h2", { type: "words" });
 
     gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: "#contact",
-          start: "top center",
-        },
-      })
+      .timeline({ scrollTrigger: { trigger: "#contact", start: "top center" } })
       .from(titleSplit.words, { opacity: 0, yPercent: 100, stagger: 0.02 })
       .from("#contact h3, #contact p", {
         opacity: 0,
@@ -58,7 +52,6 @@ const Contact = () => {
       .to("#f-right-decor", { y: -50, duration: 1, ease: "power1.inOut" })
       .to("#f-left-decor", { y: -50, duration: 1, ease: "power1.inOut" }, "<");
 
-    // Cursor hanya aktif di dalam footer
     const section = footerRef.current;
 
     const moveCursor = (e) => {
@@ -69,7 +62,6 @@ const Contact = () => {
         ease: "power3.out",
       });
     };
-
     const hideCursor = () => {
       gsap.to(cursorRef.current, {
         scale: 0,
@@ -137,7 +129,6 @@ const Contact = () => {
         />
       </div>
 
-      <img src="/images/download.png" alt="decor" id="f-left-decor" />
       <img
         src="/images/download.png"
         alt="decor"
@@ -163,7 +154,6 @@ const Contact = () => {
               <div className="store-card-img">
                 <img src={store.image} alt={store.name} />
               </div>
-
               <div className="store-card-overlay">
                 <span className="store-index">
                   {String(index + 1).padStart(2, "0")}
@@ -220,8 +210,8 @@ const Contact = () => {
 
           <div>
             <h3>Hubungi Kami</h3>
-            <p>{storeInfo.contact.phone}</p>
-            <p>{storeInfo.contact.email}</p>
+            <p>{storeInfo.contact?.phone}</p>
+            <p>{storeInfo.contact?.email}</p>
           </div>
         </div>
       </div>
