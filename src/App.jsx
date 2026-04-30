@@ -8,6 +8,7 @@ import Art from "./components/Art.jsx";
 import Contact from "./components/Contact.jsx";
 import Services from "./components/Services.jsx";
 import Styles from "./components/Styles.jsx";
+import StoresAdmin from "./admin/pages/StroresAdmin.jsx";
 
 // ── Data live dari Supabase (ganti constants.js) ──────────────
 import {
@@ -15,6 +16,7 @@ import {
   useBarbers,
   useStyles,
   useOpeningHours,
+  useStores,
 } from "./lib/data.js";
 
 // ── Data statis tetap dari constants (tidak perlu CRUD) ───────
@@ -34,6 +36,7 @@ const App = () => {
   const { barberLists } = useBarbers();
   const { allStyles } = useStyles();
   const { openingHours } = useOpeningHours();
+  const { stores } = useStores();
 
   return (
     <main>
@@ -47,6 +50,7 @@ const App = () => {
         storeInfo={storeInfo}
         openingHours={openingHours}
         socials={socials}
+        stores={stores} // ← kirim data stores ke Contact
       />
     </main>
   );

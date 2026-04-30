@@ -1,14 +1,19 @@
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all";
-import { barberLists } from "../constants/index.js";
 import { useRef } from "react";
+import { useTable } from "../hooks/useTable"; // ← import hook
 
 const Art = () => {
   const cursorRef = useRef();
   const cursorImgRef = useRef();
 
+  // ← Ambil data dari Supabase
+  const { data: barbers, loading } = useTable("barbers", { orderBy: "name" });
+
   useGSAP(() => {
+    if (loading) return; // tunggu data dulu
+
     const titleSplit = SplitText.create("#art-title", { type: "words" });
 
     gsap
@@ -49,7 +54,7 @@ const Art = () => {
 
     window.addEventListener("mousemove", moveCursor);
     return () => window.removeEventListener("mousemove", moveCursor);
-  });
+  }, [loading]); // ← dependency loading
 
   const handleMouseEnter = (image) => {
     cursorImgRef.current.src = image;
@@ -69,6 +74,25 @@ const Art = () => {
       ease: "power3.in",
     });
   };
+
+  const barberLists = barbers
+    .map((b) => ({
+      id: b.id,
+      name: b.name,
+      role: b.role,
+      phone: b.phone,
+      store: b.store,
+      wa: b.wa,
+      imgPath: b.img_path,
+      isOnline: b.is_online,
+    }))
+    .sort((a, b) => (b.isOnline ? 1 : 0) - (a.isOnline ? 1 : 0));
+  if (loading)
+    return (
+      <div style={{ color: "white", textAlign: "center", padding: "5rem" }}>
+        Loading barbers...
+      </div>
+    );
 
   return (
     <div

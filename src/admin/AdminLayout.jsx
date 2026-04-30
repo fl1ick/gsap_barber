@@ -6,6 +6,7 @@ const navItems = [
   { to: "/admin/barbers", label: "Barbers", icon: "👤" },
   { to: "/admin/styles", label: "Hairstyles", icon: "◈" },
   { to: "/admin/hours", label: "Jam Buka", icon: "◷" },
+  { to: "/admin/stores", label: "Cabang", icon: "🏪" },
 ];
 
 export default function AdminLayout() {

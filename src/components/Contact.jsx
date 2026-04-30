@@ -3,44 +3,18 @@ import { SplitText } from "gsap/all";
 import gsap from "gsap";
 import { useRef } from "react";
 
-const stores = [
-  {
-    id: 1,
-    name: "Prime Cuts — Sudirman",
-    address: "Jl. Sudirman No. 123, Temanggung",
-    phone: "0812-3456-7890",
-    hours: "10.00 – 21.00",
-    image: "/images/abt1.png",
-    wa: "https://wa.me/6281234567890?text=Halo%20Prime%20Cuts%20Sudirman%2C%20saya%20ingin%20booking%20",
-  },
-  {
-    id: 2,
-    name: "Prime Cuts — Pemuda",
-    address: "Jl. Pemuda No. 45, Temanggung",
-    phone: "0812-9876-5432",
-    hours: "09.00 – 22.00",
-    image: "/images/abt2.png",
-    wa: "https://wa.me/6281298765432?text=Halo%20Prime%20Cuts%20Pemuda%2C%20saya%20ingin%20booking%20",
-  },
-  {
-    id: 3,
-    name: "Prime Cuts — Merdeka",
-    address: "Jl. Merdeka No. 88, Temanggung",
-    phone: "0813-1122-3344",
-    hours: "10.00 – 20.00",
-    image: "/images/abt3.png",
-    wa: "https://wa.me/6281311223344?text=Halo%20Prime%20Cuts%20Merdeka%2C%20saya%20ingin%20booking%20",
-  },
-];
-
-const Contact = ({ storeInfo = {}, openingHours = [], socials = [] }) => {
+const Contact = ({
+  storeInfo = {},
+  openingHours = [],
+  socials = [],
+  stores = [],
+}) => {
   const cursorRef = useRef();
   const cursorImgRef = useRef();
   const footerRef = useRef();
 
   useGSAP(() => {
     const titleSplit = SplitText.create("#contact h2", { type: "words" });
-
     gsap
       .timeline({ scrollTrigger: { trigger: "#contact", start: "top center" } })
       .from(titleSplit.words, { opacity: 0, yPercent: 100, stagger: 0.02 })
@@ -53,32 +27,28 @@ const Contact = ({ storeInfo = {}, openingHours = [], socials = [] }) => {
       .to("#f-left-decor", { y: -50, duration: 1, ease: "power1.inOut" }, "<");
 
     const section = footerRef.current;
-
-    const moveCursor = (e) => {
+    const moveCursor = (e) =>
       gsap.to(cursorRef.current, {
         left: e.clientX,
         top: e.clientY,
         duration: 0.5,
         ease: "power3.out",
       });
-    };
-    const hideCursor = () => {
+    const hideCursor = () =>
       gsap.to(cursorRef.current, {
         scale: 0,
         opacity: 0,
         duration: 0.3,
         ease: "power3.in",
       });
-    };
 
     section.addEventListener("mousemove", moveCursor);
     section.addEventListener("mouseleave", hideCursor);
-
     return () => {
       section.removeEventListener("mousemove", moveCursor);
       section.removeEventListener("mouseleave", hideCursor);
     };
-  });
+  }, []);
 
   const handleMouseEnter = (image) => {
     cursorImgRef.current.src = image;

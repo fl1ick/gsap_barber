@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "./supabase";
+import { useTable } from "../hooks/useTable"; // ← tambah ini
 
 // Generic hook untuk fetch data publik (read-only, untuk frontend)
 function useFetch(tableName, orderBy = "created_at") {
@@ -47,4 +48,8 @@ export function useStyles() {
 export function useOpeningHours() {
   const { data, loading } = useFetch("opening_hours", "sort_order");
   return { openingHours: data, loading };
+}
+export function useStores() {
+  const { data: stores, loading } = useTable("stores", { orderBy: "name" });
+  return { stores, loading };
 }

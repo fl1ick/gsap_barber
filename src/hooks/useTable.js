@@ -22,20 +22,33 @@ export function useTable(tableName, options = {}) {
   useEffect(() => { fetch(); }, [fetch]);
 
   const insert = async (row) => {
-    const { data: newRow, error: err } = await supabase
-      .from(tableName).insert(row).select().single();
-    if (err) throw new Error(err.message);
-    setData((prev) => [...prev, newRow]);
-    return newRow;
-  };
+  const { data: newRow, error: err } = await supabase
+    .from(tableName)
+    .insert(row)
+    .select()
+    .maybeSingle(); // ← ganti single() → maybeSingle()
+  
+  if (err) throw new Error(err.message);
+  if (!newRow) throw new Error("Insert berhasil tapi data tidak dikembalikan");
+  
+  setData((prev) => [...prev, newRow]);
+  return newRow;
+};
 
-  const update = async (id, updates) => {
-    const { data: updated, error: err } = await supabase
-      .from(tableName).update(updates).eq("id", id).select().single();
-    if (err) throw new Error(err.message);
-    setData((prev) => prev.map((r) => (r.id === id ? updated : r)));
-    return updated;
-  };
+const update = async (id, updates) => {
+  const { data: updated, error: err } = await supabase
+    .from(tableName)
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .maybeSingle(); // ← ganti single() → maybeSingle()
+  
+  if (err) throw new Error(err.message);
+  if (!updated) throw new Error(`Tidak ada baris dengan id: ${id}`);
+  
+  setData((prev) => prev.map((r) => (r.id === id ? updated : r)));
+  return updated;
+};
 
   const remove = async (id) => {
     const { error: err } = await supabase.from(tableName).delete().eq("id", id);

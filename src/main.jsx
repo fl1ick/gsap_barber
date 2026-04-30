@@ -13,6 +13,7 @@ import ServicesPage from "./admin/pages/ServicesPage.jsx";
 import BarbersPage from "./admin/pages/BarbersPage.jsx";
 import StylesPage from "./admin/pages/StylesPage.jsx";
 import HoursPage from "./admin/pages/HoursPage.jsx";
+import StroresAdmin from "./admin/pages/StroresAdmin.jsx";
 
 const router = createBrowserRouter([
   // ── Frontend ──────────────────────────────
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { path: "barbers", element: <BarbersPage /> },
       { path: "styles", element: <StylesPage /> },
       { path: "hours", element: <HoursPage /> },
+      { path: "stores", element: <StroresAdmin /> },
     ],
   },
 ]);
