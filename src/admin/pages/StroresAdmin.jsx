@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { uploadImage } from "../../lib/UploadImage.js";
+import {
+  AdminTable,
+  Modal,
+  Field,
+  Input,
+  Select,
+  SubmitBtn,
+  Badge,
+  PageHeader,
+  TableSkeleton,
+  ImageUpload,
+} from "../components/AdminUI";
 import { useTable } from "../../hooks/useTable";
 
 const EMPTY_FORM = {
