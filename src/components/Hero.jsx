@@ -109,10 +109,10 @@ const Hero = () => {
         <div className="body">
           <div className="content flex flex-col md:flex-row justify-between gap-8">
             {/* Mobile Layout */}
-            <div className="md:hidden flex justify-between items-start gap-4">
+            <div className="md:hidden flex justify-between items-start gap-3">
               {/* Experience kiri */}
               <div className="view-services w-1/2">
-                <p className="subtitle text-left text-xs leading-5">
+                <p className="subtitle !text-[10px] leading-4 text-left">
                   Experience premium grooming with expert barbers, modern
                   techniques, and a classic touch — crafted to elevate your
                   style.
@@ -120,14 +120,14 @@ const Hero = () => {
               </div>
 
               {/* Precision kanan */}
-              <div className="space-y-3 w-1/2 text-right">
-                <p className="text-[10px]">Sharp. Clean. Confident.</p>
+              <div className="space-y-2 w-1/2 text-right">
+                <p className="text-[8px]">Sharp. Clean. Confident.</p>
 
-                <p className="subtitle text-sm leading-5">
+                <p className="subtitle !text-xs leading-4">
                   Precision Cuts <br /> Timeless Style
                 </p>
 
-                <a href="#services" className="inline-block mt-2 text-xs">
+                <a href="#services" className="inline-block mt-1 text-[10px]">
                   View Services
                 </a>
               </div>
