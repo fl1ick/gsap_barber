@@ -1,7 +1,6 @@
 import { useState } from "react";
 import uploadImage from "../../lib/UploadImage.js";
 import { useTable } from "../../hooks/useTable";
-import { uploadImage } from "../../lib/UploadImage";
 
 const EMPTY_FORM = {
   name: "",
