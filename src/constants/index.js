@@ -3,7 +3,7 @@ const navLinks = [
   { id: "services", title: "Services" },
   { id: "about", title: "About Us" },
   { id: "art", title: "Our Barbers" },
-  { id: "contact", title: "store" },
+  { id: "contact", title: "Our Store" },
 ];
 
 // SERVICES

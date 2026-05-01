@@ -40,13 +40,6 @@ const Styles = ({ allStyles = [] }) => {
 
   return (
     <section id="showcase" aria-labelledby="showcase-heading">
-      <img
-        src="/images/download.png"
-        alt="decor"
-        id="sc-right-decor"
-        className="hidden md:block"
-      />
-
       <h2 id="showcase-heading" className="sr-only">
         Hairstyle Showcase
       </h2>
