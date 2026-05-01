@@ -36,7 +36,7 @@ const EMPTY = {
   name: "",
   role: ROLES[0],
   phone: "",
-  store: STORES[0],
+  store: "",
   wa: "",
   img_path: IMGS[0],
   is_online: true,
@@ -46,6 +46,8 @@ export default function BarbersPage() {
   const { data, loading, insert, update, remove } = useTable("barbers", {
     orderBy: "created_at",
   });
+  const { data: storesData } = useTable("stores", { orderBy: "name" });
+  const STORES = storesData.map((s) => s.name);
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState(EMPTY);
   const [editId, setEditId] = useState(null);

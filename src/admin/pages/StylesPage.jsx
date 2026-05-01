@@ -143,13 +143,6 @@ export default function StylesPage() {
             </Field>
             <Field label="Foto">
               <ImageUpload
-                value={form.img_path}
-                folder="barbers"
-                onChange={(url) => setForm((p) => ({ ...p, img_path: url }))}
-              />
-            </Field>
-            <Field label="Foto">
-              <ImageUpload
                 value={form.image}
                 folder="styles"
                 onChange={(url) => setForm((p) => ({ ...p, image: url }))}

@@ -62,20 +62,6 @@ export default function StoresAdmin() {
     });
   };
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      const url = await uploadImage(file, "stores"); // ← pakai helper
-      setField("image", url);
-    } catch (err) {
-      alert("Upload gagal: " + err.message);
-    } finally {
-      setUploading(false);
-    }
-  };
-
   const openAdd = () => {
     setForm(EMPTY_FORM);
     setEditingId(null);
@@ -326,34 +312,11 @@ export default function StoresAdmin() {
               }}
             >
               <label style={labelStyle}>Foto</label>
-              {form.image && (
-                <img
-                  src={form.image}
-                  alt="preview"
-                  style={{
-                    width: "100%",
-                    height: "120px",
-                    objectFit: "cover",
-                    borderRadius: "0.5rem",
-                    marginBottom: "0.5rem",
-                  }}
-                />
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                style={{
-                  ...inputStyle,
-                  padding: "0.375rem",
-                  cursor: "pointer",
-                }}
+              <ImageUpload
+                value={form.image}
+                folder="stores"
+                onChange={(url) => setField("image", url)}
               />
-              {uploading && (
-                <p style={{ color: "#0d9488", fontSize: "0.75rem" }}>
-                  Mengupload...
-                </p>
-              )}
             </div>
 
             <button
