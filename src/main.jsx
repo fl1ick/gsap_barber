@@ -9,7 +9,7 @@ import App from "./App.jsx";
 
 // Admin
 import AdminLayout from "./admin/AdminLayout.jsx";
-import ProtectedRoute from "./admin/components/Protectedroute.jsx";
+import ProtectedRoute from "./admin/components/ProtectedRoute.jsx";
 import LoginPage from "./admin/pages/LoginPage.jsx";
 import Dashboard from "./admin/pages/Dashboard.jsx";
 import ServicesPage from "./admin/pages/ServicesPage.jsx";
