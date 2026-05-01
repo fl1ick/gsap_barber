@@ -1,6 +1,6 @@
 // ── AdminUI.jsx — Komponen reusable untuk admin panel ──────────
 import { useState } from "react";
-import { uploadImage } from "../../lib/uploadImage";
+import uploadImage from "../../lib/UploadImage.js";
 
 export function ImageUpload({ value, onChange, folder = "general" }) {
   const [uploading, setUploading] = useState(false);
