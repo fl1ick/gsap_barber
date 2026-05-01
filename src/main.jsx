@@ -9,7 +9,7 @@ import App from "./App.jsx";
 
 // Admin
 import AdminLayout from "./admin/AdminLayout.jsx";
-import ProtectedRoute from "./admin/components/ProtectedRoute.jsx";
+import ProtectedRoute from "./admin/components/Protectedroute.jsx";
 import LoginPage from "./admin/pages/LoginPage.jsx";
 import Dashboard from "./admin/pages/Dashboard.jsx";
 import ServicesPage from "./admin/pages/ServicesPage.jsx";
@@ -35,17 +35,17 @@ const router = createBrowserRouter([
   // ── Admin Panel (protected) ───────────────
   {
     path: "/admin",
-    element: <ProtectedRoute />,      // ← cek auth dulu
+    element: <ProtectedRoute />, // ← cek auth dulu
     children: [
       {
-        element: <AdminLayout />,     // ← baru render layout
+        element: <AdminLayout />, // ← baru render layout
         children: [
-          { index: true,              element: <Dashboard /> },
-          { path: "services",         element: <ServicesPage /> },
-          { path: "barbers",          element: <BarbersPage /> },
-          { path: "styles",           element: <StylesPage /> },
-          { path: "hours",            element: <HoursPage /> },
-          { path: "stores",           element: <StroresAdmin /> },
+          { index: true, element: <Dashboard /> },
+          { path: "services", element: <ServicesPage /> },
+          { path: "barbers", element: <BarbersPage /> },
+          { path: "styles", element: <StylesPage /> },
+          { path: "hours", element: <HoursPage /> },
+          { path: "stores", element: <StroresAdmin /> },
         ],
       },
     ],
