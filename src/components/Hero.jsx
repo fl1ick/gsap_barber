@@ -107,20 +107,51 @@ const Hero = () => {
         />
 
         <div className="body">
-          <div className="content">
-            <div className="space-y-5 hidden md:block">
-              <p>Sharp. Clean. Confident.</p>
-              <p className="subtitle">
-                Precision Cuts <br /> Timeless Style
-              </p>
+          <div className="content flex flex-col md:flex-row justify-between gap-8">
+            {/* Mobile Layout */}
+            <div className="md:hidden flex justify-between items-start gap-6">
+              {/* Experience kiri */}
+              <div className="view-services w-1/2">
+                <p className="subtitle text-left">
+                  Experience premium grooming with expert barbers, modern
+                  techniques, and a classic touch — crafted to elevate your
+                  style.
+                </p>
+              </div>
+
+              {/* Precision kanan */}
+              <div className="space-y-5 w-1/2 text-right">
+                <p>Sharp. Clean. Confident.</p>
+
+                <p className="subtitle">
+                  Precision Cuts <br /> Timeless Style
+                </p>
+
+                <a href="#services" className="inline-block mt-4">
+                  View Services
+                </a>
+              </div>
             </div>
 
-            <div className="view-services">
-              <p className="subtitle">
-                Experience premium grooming with expert barbers, modern
-                techniques, and a classic touch — crafted to elevate your style.
-              </p>
-              <a href="#services">View Services</a>
+            {/* Desktop Layout */}
+            <div className="hidden md:flex justify-between w-full">
+              <div className="space-y-5">
+                <p>Sharp. Clean. Confident.</p>
+
+                <p className="subtitle">
+                  Precision Cuts <br /> Timeless Style
+                </p>
+              </div>
+
+              <div className="view-services max-w-md">
+                <p className="subtitle">
+                  Experience premium grooming with expert barbers, modern
+                  techniques, and a classic touch — crafted to elevate your
+                  style.
+                </p>
+
+                <a href="#services">View Services</a>
+              </div>
             </div>
           </div>
         </div>
