@@ -7,15 +7,14 @@ const navItems = [
   { to: "/admin/styles", label: "Hairstyles", icon: "◈" },
   { to: "/admin/hours", label: "Jam Buka", icon: "◷" },
   { to: "/admin/stores", label: "Cabang", icon: "🏪" },
+  { to: "/admin/notifications", label: "Notifikasi", icon: "🔔" },
 ];
 
 export default function AdminLayout() {
   return (
-    // Gunakan h-screen dan overflow-hidden agar tidak scroll satu halaman penuh
     <div className="flex h-screen w-full bg-neutral-950 text-white overflow-hidden">
       {/* Sidebar */}
       <aside className="w-64 shrink-0 bg-[#0b0f0f] border-r border-white/10 flex flex-col">
-        {/* Header - Beri padding yang konsisten dan cegah shrinking */}
         <div className="p-6 shrink-0 border-b border-white/10">
           <p className="text-[10px] font-bold tracking-[0.2em] text-teal-500 uppercase">
             Prime Cuts
@@ -23,7 +22,6 @@ export default function AdminLayout() {
           <h1 className="text-xl font-bold mt-1 text-white">Admin Panel</h1>
         </div>
 
-        {/* Navigation - Tambahkan flex-1 agar memenuhi sisa ruang */}
         <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
           {navItems.map((item) => (
             <NavLink
@@ -40,7 +38,6 @@ export default function AdminLayout() {
             >
               {({ isActive }) => (
                 <>
-                  {/* Indikator Aktif - Pastikan tidak 'absolute' menutupi teks */}
                   <div
                     className={`absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-teal-400 rounded-r transition-opacity ${
                       isActive
@@ -62,7 +59,6 @@ export default function AdminLayout() {
           ))}
         </nav>
 
-        {/* Footer - Taruh di paling bawah */}
         <div className="p-4 shrink-0 border-t border-white/10">
           <a
             href="/"

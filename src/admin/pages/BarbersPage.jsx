@@ -13,23 +13,12 @@ import {
   ImageUpload,
 } from "../components/AdminUI";
 
-const STORES = [
-  "Prime Cuts — Sudirman",
-  "Prime Cuts — Pemuda",
-  "Prime Cuts — Merdeka",
-];
 const ROLES = [
   "Senior Barber",
   "Fade Specialist",
   "Classic Shave Expert",
   "Color & Style",
   "Junior Barber",
-];
-const IMGS = [
-  "/images/barber1.png",
-  "/images/barber2.png",
-  "/images/barber3.png",
-  "/images/barber4.png",
 ];
 
 const EMPTY = {
@@ -38,7 +27,7 @@ const EMPTY = {
   phone: "",
   store: "",
   wa: "",
-  img_path: IMGS[0],
+  img_path: "",
   is_online: true,
 };
 
@@ -48,6 +37,7 @@ export default function BarbersPage() {
   });
   const { data: storesData } = useTable("stores", { orderBy: "name" });
   const STORES = storesData.map((s) => s.name);
+
   const [modal, setModal] = useState(false);
   const [form, setForm] = useState(EMPTY);
   const [editId, setEditId] = useState(null);
@@ -86,7 +76,6 @@ export default function BarbersPage() {
 
   const set = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
 
-  // Auto-generate WA link dari nomor telepon
   const handlePhoneChange = (e) => {
     const phone = e.target.value;
     const digits = phone.replace(/\D/g, "");
@@ -102,6 +91,22 @@ export default function BarbersPage() {
   };
 
   const columns = [
+    {
+      key: "img_path",
+      label: "Foto",
+      render: (v) =>
+        v ? (
+          <img
+            src={v}
+            alt=""
+            className="w-12 h-12 rounded-lg object-cover border border-white/10"
+          />
+        ) : (
+          <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-xs">
+            —
+          </div>
+        ),
+    },
     { key: "name", label: "Nama" },
     { key: "role", label: "Posisi" },
     { key: "store", label: "Cabang" },
@@ -174,8 +179,8 @@ export default function BarbersPage() {
             <Field label="Link WhatsApp (auto)">
               <Input
                 value={form.wa}
-                onChange={set("wa")}
-                placeholder="https://wa.me/628..."
+                readOnly
+                className="opacity-40 cursor-default"
               />
             </Field>
             <div className="grid grid-cols-2 gap-3">

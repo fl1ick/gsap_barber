@@ -90,7 +90,7 @@ const Hero = () => {
       <div className="relative z-20 flex flex-col min-h-dvh">
         <h1
           className="title md:mt-32 mt-40 font-modern-negra leading-none text-center w-full px-4"
-          style={{ fontSize: "clamp(3rem, 15vw, 18rem)" }}
+          style={{ fontSize: "clamp(2rem, 8vw, 10rem)" }}
         >
           BARBERSHOP
         </h1>

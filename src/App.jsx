@@ -9,6 +9,7 @@ import Contact from "./components/Contact.jsx";
 import Services from "./components/Services.jsx";
 import Styles from "./components/Styles.jsx";
 import StoresAdmin from "./admin/pages/StroresAdmin.jsx";
+import UserNotificationDisplay from "./components/UserNotificationDisplay";
 
 // ── Data live dari Supabase (ganti constants.js) ──────────────
 import {
@@ -40,6 +41,7 @@ const App = () => {
 
   return (
     <main>
+      <UserNotificationDisplay />
       <Navbar navLinks={navLinks} />
       <Hero />
       <Services serviceLists={serviceLists} premiumLists={premiumLists} />

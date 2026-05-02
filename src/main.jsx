@@ -17,8 +17,12 @@ import BarbersPage from "./admin/pages/BarbersPage.jsx";
 import StylesPage from "./admin/pages/StylesPage.jsx";
 import HoursPage from "./admin/pages/HoursPage.jsx";
 import StroresAdmin from "./admin/pages/StroresAdmin.jsx";
+import NotificationsAdmin from "./admin/pages/NotificationsAdmin.jsx";
+
+// Notification system
 
 gsap.config({ nullTargetWarn: false });
+
 const router = createBrowserRouter([
   // ── Frontend ──────────────────────────────
   {
@@ -35,10 +39,10 @@ const router = createBrowserRouter([
   // ── Admin Panel (protected) ───────────────
   {
     path: "/admin",
-    element: <ProtectedRoute />, // ← cek auth dulu
+    element: <ProtectedRoute />,
     children: [
       {
-        element: <AdminLayout />, // ← baru render layout
+        element: <AdminLayout />,
         children: [
           { index: true, element: <Dashboard /> },
           { path: "services", element: <ServicesPage /> },
@@ -46,6 +50,7 @@ const router = createBrowserRouter([
           { path: "styles", element: <StylesPage /> },
           { path: "hours", element: <HoursPage /> },
           { path: "stores", element: <StroresAdmin /> },
+          { path: "notifications", element: <NotificationsAdmin /> },
         ],
       },
     ],

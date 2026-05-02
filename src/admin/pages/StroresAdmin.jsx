@@ -4,12 +4,9 @@ import {
   Modal,
   Field,
   Input,
-  Select,
-  SubmitBtn,
-  Badge,
+  ImageUpload,
   PageHeader,
   TableSkeleton,
-  ImageUpload,
 } from "../components/AdminUI";
 import { useTable } from "../../hooks/useTable";
 
@@ -22,23 +19,6 @@ const EMPTY_FORM = {
   wa: "",
 };
 
-const inputStyle = {
-  width: "100%",
-  padding: "0.5rem 0.75rem",
-  borderRadius: "0.5rem",
-  background: "#1a1a1a",
-  border: "1px solid #333",
-  color: "white",
-  fontSize: "0.875rem",
-};
-const labelStyle = {
-  fontSize: "0.75rem",
-  color: "#888",
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
-};
-
-// Auto-generate WA link dari nomor telepon
 const generateWa = (phone, name) => {
   const digits = phone.replace(/\D/g, "");
   const intl = digits.startsWith("0") ? "62" + digits.slice(1) : digits;
@@ -57,12 +37,11 @@ export default function StoresAdmin() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const setField = (key, value) => {
     setForm((prev) => {
       const updated = { ...prev, [key]: value };
-      // Auto-generate WA saat phone atau name berubah
       if (key === "phone" || key === "name") {
         updated.wa = generateWa(
           key === "phone" ? value : prev.phone,
@@ -80,12 +59,12 @@ export default function StoresAdmin() {
   };
   const openEdit = (store) => {
     setForm({
-      name: store.name,
-      address: store.address,
-      phone: store.phone,
-      hours: store.hours,
-      image: store.image,
-      wa: store.wa,
+      name: store.name ?? "",
+      address: store.address ?? "",
+      phone: store.phone ?? "",
+      hours: store.hours ?? "",
+      image: store.image ?? "",
+      wa: store.wa ?? "",
     });
     setEditingId(store.id);
     setShowModal(true);
@@ -97,257 +76,140 @@ export default function StoresAdmin() {
   };
 
   const handleSave = async () => {
+    setSaving(true);
     try {
       if (editingId) await update(editingId, form);
       else await insert(form);
       closeModal();
     } catch (e) {
       alert(e.message);
+    } finally {
+      setSaving(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm("Hapus cabang ini?")) return;
-    try {
-      await remove(id);
-    } catch (e) {
-      alert(e.message);
-    }
-  };
-
-  const field = (label, key, placeholder = "") => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-      <label style={labelStyle}>{label}</label>
-      <input
-        style={inputStyle}
-        value={form[key]}
-        placeholder={placeholder}
-        onChange={(e) => setField(key, e.target.value)}
-      />
-    </div>
-  );
+  const columns = [
+    {
+      key: "image",
+      label: "Foto",
+      render: (v) =>
+        v ? (
+          <img
+            src={v}
+            alt=""
+            className="w-12 h-12 rounded-lg object-cover border border-white/10"
+          />
+        ) : (
+          <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-xs">
+            —
+          </div>
+        ),
+    },
+    {
+      key: "name",
+      label: "Nama Cabang",
+      render: (v) => <span className="font-semibold text-white">{v}</span>,
+    },
+    {
+      key: "address",
+      label: "Alamat",
+      render: (v) => <span className="text-white/60">{v || "—"}</span>,
+    },
+    {
+      key: "phone",
+      label: "Telepon",
+      render: (v) => <span className="text-white/60">{v || "—"}</span>,
+    },
+    {
+      key: "hours",
+      label: "Jam Buka",
+      render: (v) => <span className="text-white/60">{v || "—"}</span>,
+    },
+  ];
 
   return (
-    <div style={{ padding: "2rem", color: "white" }}>
-      {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          marginBottom: "2rem",
-        }}
-      >
-        <div>
-          <h1 style={{ fontSize: "1.5rem", fontWeight: 700 }}>Cabang</h1>
-          <p style={{ color: "#666", fontSize: "0.875rem" }}>
-            {stores.length} cabang terdaftar
-          </p>
-        </div>
-        <button
-          onClick={openAdd}
-          style={{
-            background: "#0d9488",
-            color: "white",
-            border: "none",
-            borderRadius: "0.5rem",
-            padding: "0.5rem 1.25rem",
-            cursor: "pointer",
-            fontWeight: 600,
-          }}
-        >
-          + Tambah
-        </button>
-      </div>
+    <div className="p-8">
+      <PageHeader
+        title="Cabang"
+        desc={`${stores.length} cabang terdaftar`}
+        onAdd={openAdd}
+      />
 
-      {/* Table */}
       {loading ? (
-        <p style={{ color: "#666" }}>Loading...</p>
+        <TableSkeleton />
       ) : (
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            fontSize: "0.875rem",
-          }}
-        >
-          <thead>
-            <tr style={{ borderBottom: "1px solid #222" }}>
-              {["Nama Cabang", "Alamat", "Telepon", "Jam Buka", "Aksi"].map(
-                (h) => (
-                  <th
-                    key={h}
-                    style={{
-                      textAlign: "left",
-                      padding: "0.75rem 1rem",
-                      color: "#666",
-                      fontWeight: 500,
-                      fontSize: "0.75rem",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {h}
-                  </th>
-                ),
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {stores.map((store) => (
-              <tr key={store.id} style={{ borderBottom: "1px solid #111" }}>
-                <td style={{ padding: "1rem", fontWeight: 600 }}>
-                  {store.name}
-                </td>
-                <td style={{ padding: "1rem", color: "#999" }}>
-                  {store.address}
-                </td>
-                <td style={{ padding: "1rem", color: "#999" }}>
-                  {store.phone}
-                </td>
-                <td style={{ padding: "1rem", color: "#999" }}>
-                  {store.hours}
-                </td>
-                <td style={{ padding: "1rem" }}>
-                  <div style={{ display: "flex", gap: "0.5rem" }}>
-                    <button
-                      onClick={() => openEdit(store)}
-                      style={{
-                        background: "transparent",
-                        border: "1px solid #444",
-                        color: "white",
-                        borderRadius: "0.375rem",
-                        padding: "0.25rem 0.75rem",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(store.id)}
-                      style={{
-                        background: "transparent",
-                        border: "1px solid #dc2626",
-                        color: "#ef4444",
-                        borderRadius: "0.375rem",
-                        padding: "0.25rem 0.75rem",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Hapus
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <AdminTable
+          columns={columns}
+          rows={stores}
+          onEdit={openEdit}
+          onDelete={remove}
+        />
       )}
 
-      {/* Modal */}
       {showModal && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.7)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 50,
-          }}
+        <Modal
+          title={editingId ? "Edit Cabang" : "Tambah Cabang"}
+          onClose={closeModal}
         >
-          <div
-            style={{
-              background: "#111",
-              borderRadius: "1rem",
-              padding: "2rem",
-              width: "100%",
-              maxWidth: "480px",
-              border: "1px solid #222",
-              display: "flex",
-              flexDirection: "column",
-              gap: "1rem",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <h2 style={{ fontSize: "1.125rem", fontWeight: 700 }}>
-                {editingId ? "Edit Cabang" : "Tambah Cabang"}
-              </h2>
-              <button
-                onClick={closeModal}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "#666",
-                  fontSize: "1.25rem",
-                  cursor: "pointer",
-                }}
-              >
-                ×
-              </button>
+          <div className="space-y-4">
+            <Field label="Nama Cabang">
+              <Input
+                value={form.name}
+                placeholder="Prime Cuts — Sudirman"
+                onChange={(e) => setField("name", e.target.value)}
+              />
+            </Field>
+
+            <Field label="Alamat">
+              <Input
+                value={form.address}
+                placeholder="Jl. Sudirman No. 123"
+                onChange={(e) => setField("address", e.target.value)}
+              />
+            </Field>
+
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Telepon">
+                <Input
+                  value={form.phone}
+                  placeholder="0812-3456-7890"
+                  onChange={(e) => setField("phone", e.target.value)}
+                />
+              </Field>
+              <Field label="Jam Buka">
+                <Input
+                  value={form.hours}
+                  placeholder="10.00 – 21.00"
+                  onChange={(e) => setField("hours", e.target.value)}
+                />
+              </Field>
             </div>
 
-            {field("Nama Cabang", "name", "Prime Cuts — Sudirman")}
-            {field("Alamat", "address", "Jl. Sudirman No. 123")}
-            {field("Telepon", "phone", "0812-3456-7890")}
-            {field("Jam Buka", "hours", "10.00 – 21.00")}
-
-            {/* WA Auto */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.35rem",
-              }}
-            >
-              <label style={labelStyle}>Link WhatsApp (Auto)</label>
-              <input
-                style={{ ...inputStyle, color: "#666" }}
+            <Field label="Link WhatsApp (Auto)">
+              <Input
                 value={form.wa}
                 readOnly
+                className="opacity-40 cursor-default"
               />
-            </div>
+            </Field>
 
-            {/* Upload Foto */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.35rem",
-              }}
-            >
-              <label style={labelStyle}>Foto</label>
+            <Field label="Foto">
               <ImageUpload
                 value={form.image}
                 folder="stores"
                 onChange={(url) => setField("image", url)}
               />
-            </div>
+            </Field>
 
             <button
               onClick={handleSave}
-              disabled={uploading}
-              style={{
-                background: uploading ? "#333" : "#0d9488",
-                color: "white",
-                border: "none",
-                borderRadius: "0.5rem",
-                padding: "0.625rem",
-                fontWeight: 600,
-                cursor: uploading ? "not-allowed" : "pointer",
-                marginTop: "0.5rem",
-              }}
+              disabled={saving}
+              className="w-full mt-2 py-2.5 rounded-lg bg-teal-600 hover:bg-teal-500 active:scale-[0.98] disabled:opacity-50 text-sm font-semibold text-white transition-all"
             >
-              {uploading ? "Mengupload foto..." : "Simpan"}
+              {saving ? "Menyimpan..." : "Simpan"}
             </button>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

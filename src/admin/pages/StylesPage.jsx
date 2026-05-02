@@ -63,6 +63,22 @@ export default function StylesPage() {
 
   const columns = [
     {
+      key: "image",
+      label: "Foto",
+      render: (v) =>
+        v ? (
+          <img
+            src={v}
+            alt=""
+            className="w-12 h-12 rounded-lg object-cover border border-white/10"
+          />
+        ) : (
+          <div className="w-12 h-12 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/20 text-xs">
+            —
+          </div>
+        ),
+    },
+    {
       key: "sort_order",
       label: "#",
       render: (v) => (
@@ -78,13 +94,6 @@ export default function StylesPage() {
         <span className="line-clamp-1 max-w-xs block text-white/50 text-xs">
           {v}
         </span>
-      ),
-    },
-    {
-      key: "image",
-      label: "Path Gambar",
-      render: (v) => (
-        <span className="text-xs text-white/30 font-mono">{v}</span>
       ),
     },
   ];
