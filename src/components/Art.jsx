@@ -2,17 +2,18 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all";
 import { useRef } from "react";
-import { useTable } from "../hooks/useTable"; // ← import hook
+import { useNavigate } from "react-router-dom";
+import { useTable } from "../hooks/useTable";
 
 const Art = () => {
   const cursorRef = useRef();
   const cursorImgRef = useRef();
+  const navigate = useNavigate();
 
-  // ← Ambil data dari Supabase
   const { data: barbers, loading } = useTable("barbers", { orderBy: "name" });
 
   useGSAP(() => {
-    if (loading) return; // tunggu data dulu
+    if (loading) return;
 
     const titleSplit = SplitText.create("#art-title", { type: "words" });
 
@@ -33,13 +34,7 @@ const Art = () => {
       })
       .from(
         ".barber-card",
-        {
-          opacity: 0,
-          y: 50,
-          stagger: 0.15,
-          duration: 1,
-          ease: "power3.out",
-        },
+        { opacity: 0, y: 50, stagger: 0.15, duration: 1, ease: "power3.out" },
         "-=0.5",
       );
 
@@ -51,10 +46,9 @@ const Art = () => {
         ease: "power3.out",
       });
     };
-
     window.addEventListener("mousemove", moveCursor);
     return () => window.removeEventListener("mousemove", moveCursor);
-  }, [loading]); // ← dependency loading
+  }, [loading]);
 
   const handleMouseEnter = (image) => {
     cursorImgRef.current.src = image;
@@ -82,11 +76,11 @@ const Art = () => {
       role: b.role,
       phone: b.phone,
       store: b.store,
-      wa: b.wa,
       imgPath: b.img_path,
       isOnline: b.is_online,
     }))
     .sort((a, b) => (b.isOnline ? 1 : 0) - (a.isOnline ? 1 : 0));
+
   if (loading)
     return (
       <div style={{ color: "white", textAlign: "center", padding: "5rem" }}>
@@ -106,7 +100,6 @@ const Art = () => {
           "radial-gradient(circle at center, #434343 0%, #000 50%, transparent 100%)",
       }}
     >
-      {/* Pulse animation style */}
       <style>{`
         @keyframes pulse-dot {
           0%, 100% { opacity: 1; transform: scale(1); }
@@ -115,6 +108,9 @@ const Art = () => {
         @keyframes ping {
           0%   { transform: scale(1); opacity: 0.6; }
           100% { transform: scale(2.2); opacity: 0; }
+        }
+        .barber-card:hover .barber-card-photo img {
+          transform: scale(1.05);
         }
       `}</style>
 
@@ -149,7 +145,6 @@ const Art = () => {
       <div
         style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 1.25rem" }}
       >
-        {/* Judul */}
         <h2
           id="art-title"
           style={{
@@ -161,7 +156,6 @@ const Art = () => {
         >
           Our Barbers
         </h2>
-
         <p
           style={{
             color: "rgba(255,255,255,0.5)",
@@ -174,7 +168,6 @@ const Art = () => {
           terbaik untuk kamu.
         </p>
 
-        {/* Grid */}
         <div
           style={{
             display: "grid",
@@ -183,14 +176,15 @@ const Art = () => {
           }}
         >
           {barberLists.map((barber, index) => (
-            <a
+            <div
               key={index}
-              href={barber.isOnline ? barber.wa : undefined}
-              target={barber.isOnline ? "_blank" : undefined}
-              rel="noopener noreferrer"
               className="barber-card"
               onMouseEnter={() => handleMouseEnter(barber.imgPath)}
               onMouseLeave={handleMouseLeave}
+              // ← Navigasi ke halaman booking dengan barber pre-selected
+              onClick={() =>
+                barber.isOnline && navigate(`/booking/${barber.id}`)
+              }
               style={{
                 position: "relative",
                 borderRadius: "1.5rem",
@@ -199,7 +193,6 @@ const Art = () => {
                 flexDirection: "column",
                 border: `1px solid ${barber.isOnline ? "rgba(74,222,128,0.2)" : "rgba(255,255,255,0.1)"}`,
                 minHeight: "450px",
-                textDecoration: "none",
                 transition: "border-color 0.3s, transform 0.3s",
                 cursor: barber.isOnline ? "pointer" : "default",
                 opacity: barber.isOnline ? 1 : 0.75,
@@ -207,6 +200,7 @@ const Art = () => {
             >
               {/* Foto */}
               <div
+                className="barber-card-photo"
                 style={{
                   height: "280px",
                   overflow: "hidden",
@@ -237,7 +231,7 @@ const Art = () => {
                   }}
                 />
 
-                {/* Badge status di pojok kanan atas foto */}
+                {/* Badge status */}
                 <div
                   style={{
                     position: "absolute",
@@ -248,14 +242,11 @@ const Art = () => {
                     gap: "0.4rem",
                     borderRadius: "999px",
                     padding: "0.3rem 0.7rem",
-                    background: barber.isOnline
-                      ? "rgba(0,0,0,0.55)"
-                      : "rgba(0,0,0,0.55)",
+                    background: "rgba(0,0,0,0.55)",
                     border: `1px solid ${barber.isOnline ? "rgba(74,222,128,0.5)" : "rgba(255,255,255,0.2)"}`,
                     backdropFilter: "blur(6px)",
                   }}
                 >
-                  {/* Dot dengan efek ping kalau online */}
                   <span
                     style={{
                       position: "relative",
@@ -387,7 +378,7 @@ const Art = () => {
                     </p>
                   </div>
 
-                  {/* Booking button — hanya aktif kalau online */}
+                  {/* Booking button — label berubah dari "via WA" jadi "Booking Sekarang" */}
                   <div
                     style={{
                       marginTop: "0.5rem",
@@ -411,13 +402,13 @@ const Art = () => {
                       }}
                     >
                       {barber.isOnline
-                        ? "Booking via WA"
+                        ? "✦ Booking Sekarang"
                         : "Sedang Tidak Tersedia"}
                     </p>
                   </div>
                 </div>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </div>

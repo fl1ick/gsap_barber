@@ -6,6 +6,7 @@ import gsap from "gsap";
 
 // Frontend
 import App from "./App.jsx";
+import BookingPage from "./components/BookingPage.jsx"; // ← tambah ini
 
 // Admin
 import AdminLayout from "./admin/AdminLayout.jsx";
@@ -19,8 +20,6 @@ import HoursPage from "./admin/pages/HoursPage.jsx";
 import StroresAdmin from "./admin/pages/StroresAdmin.jsx";
 import NotificationsAdmin from "./admin/pages/NotificationsAdmin.jsx";
 
-// Notification system
-
 gsap.config({ nullTargetWarn: false });
 
 const router = createBrowserRouter([
@@ -28,6 +27,17 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+
+  // ── Booking (publik) ──────────────────────
+  {
+    path: "/booking",
+    element: <BookingPage />,
+  },
+  {
+    // barberId opsional: datang dari klik kartu barber di Art section
+    path: "/booking/:barberId",
+    element: <BookingPage />,
   },
 
   // ── Login (publik, tidak perlu auth) ──────

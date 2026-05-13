@@ -8,10 +8,8 @@ import Art from "./components/Art.jsx";
 import Contact from "./components/Contact.jsx";
 import Services from "./components/Services.jsx";
 import Styles from "./components/Styles.jsx";
-import StoresAdmin from "./admin/pages/StroresAdmin.jsx";
 import UserNotificationDisplay from "./components/UserNotificationDisplay";
 
-// ── Data live dari Supabase (ganti constants.js) ──────────────
 import {
   useServices,
   useBarbers,
@@ -20,14 +18,12 @@ import {
   useStores,
 } from "./lib/data.js";
 
-// ── Data statis tetap dari constants (tidak perlu CRUD) ───────
 import {
   navLinks,
   featureLists,
   goodLists,
   storeInfo,
   socials,
-  barberLists as fallbackBarbers,
 } from "./constants/index.js";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -42,7 +38,7 @@ const App = () => {
   return (
     <main>
       <UserNotificationDisplay />
-      <Navbar navLinks={navLinks} />
+      <Navbar navLinks={navLinks} showBookingLink />
       <Hero />
       <Services serviceLists={serviceLists} premiumLists={premiumLists} />
       <About featureLists={featureLists} goodLists={goodLists} />
@@ -52,7 +48,7 @@ const App = () => {
         storeInfo={storeInfo}
         openingHours={openingHours}
         socials={socials}
-        stores={stores} // ← kirim data stores ke Contact
+        stores={stores}
       />
     </main>
   );

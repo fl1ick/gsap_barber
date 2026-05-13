@@ -4,6 +4,7 @@ const navLinks = [
   { id: "about", title: "About Us" },
   { id: "art", title: "Our Barbers" },
   { id: "contact", title: "Our Store" },
+  { id: "BookingPage", title: "Booking" },
 ];
 
 // SERVICES
