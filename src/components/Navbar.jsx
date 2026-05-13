@@ -1,7 +1,6 @@
 import { useGSAP } from "@gsap/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import gsap from "gsap";
-import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ navLinks = [] }) => {
   const navigate = useNavigate();
