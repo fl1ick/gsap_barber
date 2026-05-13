@@ -1104,7 +1104,7 @@ const BookingPage = () => {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               {step > 1 ? (
                 <button onClick={() => setStep(step - 1)} style={btnSecondary}>
-                  ← Kembali
+                  ← KembalI
                 </button>
               ) : (
                 <button onClick={() => navigate("/")} style={btnSecondary}>
