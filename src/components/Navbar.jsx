@@ -1,6 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import gsap from "gsap";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ navLinks = [] }) => {
   const navigate = useNavigate();
@@ -9,11 +10,11 @@ const Navbar = ({ navLinks = [] }) => {
 
   useGSAP(() => {
     const navTween = gsap.timeline({
-      scrollTrigger: { trigger: "navbar-front", start: "bottom top" },
+      scrollTrigger: { trigger: "#navbar-front", start: "bottom top" },
     });
 
     navTween.fromTo(
-      "navbar-front",
+      "#navbar-front",
       { backgroundColor: "transparent" },
       {
         backgroundColor: "#00000080",
@@ -43,7 +44,7 @@ const Navbar = ({ navLinks = [] }) => {
   };
 
   return (
-    <navbar-front>
+    <navbar-front id="navbar-front">
       <div>
         {/* Logo */}
         <a
@@ -88,6 +89,13 @@ const Navbar = ({ navLinks = [] }) => {
             </li>
           ))}
         </ul>
+
+        <button
+          onClick={() => navigate("/admin/login")}
+          className="sign-in-btn"
+        >
+          Sign In
+        </button>
       </div>
     </navbar-front>
   );
